@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
-  const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setUserPassword] = useState("");
+  const userEmailRef = useRef();
+  const userPasswordRef = useRef();
   const [showPassword, setShowPassword] = useState(false);
   const [wrongLogin, setWrongLogin] = useState(false);
 
   const navigate = useNavigate();
 
   const resetStates = () => {
-    setUserEmail("");
-    setUserPassword("");
+    userEmailRef.current.value = "";
+    userPasswordRef.current.value = "";
   };
 
   async function login() {
@@ -21,8 +21,8 @@ export const Login = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: userEmail,
-        password: userPassword,
+        email: userEmailRef.current.value,
+        password: userPasswordRef.current.value,
       }),
     });
     const data = await res.json();
@@ -38,7 +38,6 @@ export const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(userEmail, userPassword);
     resetStates();
     login();
   };
@@ -52,23 +51,21 @@ export const Login = () => {
         <label htmlFor="email">Email</label>
         <input
           required={true}
-          value={userEmail}
+          ref={userEmailRef}
           id="email"
           type="text"
           className="border-2 border-black w-[12rem] p-1"
           placeholder="Email..."
-          onChange={(e) => setUserEmail(e.target.value)}
         />
         <label htmlFor="password">Password</label>
         <div className="bg-red-500 w-[12rem]">
           <input
+            ref={userPasswordRef}
             required={true}
-            value={userPassword}
             id="password"
             type={showPassword ? "text" : "password"}
             className="border-2 border-black relative p-1"
             placeholder="Password..."
-            onChange={(e) => setUserPassword(e.target.value)}
           />
           <button
             type="button"

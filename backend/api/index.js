@@ -1,13 +1,11 @@
 const express = require("express");
-const { getMongoCollection } = require("./db");
+const { getMongoCollection } = require("../db");
 const { ObjectId } = require("mongodb");
 const {
   insertReceita,
   consultReceitas,
-  consultSpecificReceita,
-  consultSpecificType,
   deleteSpecificReceita,
-} = require("./functions");
+} = require("../functions");
 
 const PORT = process.env.PORT ?? 3050;
 
@@ -76,26 +74,6 @@ app.get("/api/receitas", async (req, res) => {
   try {
     const allReceitas = await consultReceitas();
     return res.status(200).json(allReceitas);
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-app.get("/api/receitas/receitaEspecifica/:name", async (req, res) => {
-  const nomeDaReceita = req.params.name;
-  const specificReceita = await consultSpecificReceita(nomeDaReceita);
-  try {
-    return res.status(200).json(specificReceita);
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-app.get("/api/receitas/tipos/:tipo", async (req, res) => {
-  const tipoDaReceita = req.params.tipo;
-  const specificType = await consultSpecificType(tipoDaReceita);
-  try {
-    return res.status(200).json(specificType);
   } catch (error) {
     console.log(error);
   }

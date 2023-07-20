@@ -13,18 +13,6 @@ async function consultReceitas() {
   return data;
 }
 
-async function consultSpecificReceita(nome) {
-  const receitaDB = await getMongoCollection("receitas");
-  const name = await receitaDB.findOne({ nome: nome });
-  return name;
-}
-
-async function consultSpecificType(type) {
-  const receitaDB = await getMongoCollection("receitas");
-  const specificType = await receitaDB.find({ tipo: type }).toArray();
-  return specificType;
-}
-
 async function deleteSpecificReceita(nome) {
   const receitaDB = await getMongoCollection("receitas");
   const name = await receitaDB.deleteOne({ nome: nome });
@@ -34,7 +22,5 @@ async function deleteSpecificReceita(nome) {
 module.exports = {
   insertReceita,
   consultReceitas,
-  consultSpecificReceita,
-  consultSpecificType,
   deleteSpecificReceita,
 };
